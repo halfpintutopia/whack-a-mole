@@ -1,6 +1,7 @@
 const grid = document.getElementById('grid');
 const score = document.getElementById('score');
 const timer = document.getElementById('timer');
+const start = document.getElementById('start');
 let squares,
     mole,
     currentScore = 0,
@@ -8,6 +9,7 @@ let squares,
 
 const columns = 3;
 const rows = 3;
+const interval = 2000;
 
 function createGameBoard() {
     let i = 0;
@@ -21,21 +23,29 @@ function createGameBoard() {
     score.innerHTML = currentScore;
     timer.innerHTML = currentTimer;
     squares = document.querySelectorAll('.square');
+
+    start.addEventListener('click', moveMole);
 }
 
 createGameBoard();
 
+function hitMole() {
+    console.log('mole hit')
+}
+
 function randomSquare() {
     [...squares].map(square => {
         square.classList.remove('mole');
+        square.removeEventListener('click', hitMole)
     });
 
-    squares[Math.floor(Math.random() * squares.length)].classList.add('mole');
+    const square = squares[Math.floor(Math.random() * squares.length)];
+    square.classList.add('mole');
+    square.addEventListener('click', hitMole)
 }
 
 function moveMole() {
     let timerID = null;
-    timerID = setInterval(randomSquare, 500)
+    timerID = setInterval(randomSquare, interval);
 }
 
-moveMole()
