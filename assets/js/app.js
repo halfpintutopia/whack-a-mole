@@ -2,14 +2,19 @@ const grid = document.getElementById('grid');
 const score = document.getElementById('score');
 const timer = document.getElementById('timer');
 const start = document.getElementById('start');
+const gameOver = document.getElementById('game-over');
 let squares,
     mole,
     currentScore = 0,
-    currentTimer = 60;
+    currentTimer = 60,
+    timerID = null
+    countDownTimerID = null;
 
 const columns = 3;
 const rows = 3;
-const interval = 2000;
+const timerInterval = 500;
+const countDownTimerInterval = 1000;
+
 
 function createGameBoard() {
     let i = 0;
@@ -30,7 +35,6 @@ function createGameBoard() {
 createGameBoard();
 
 function hitMole() {
-    console.log('mole hit', this.dataset.id)
     score.innerHTML = ++currentScore;
 }
 
@@ -46,7 +50,16 @@ function randomSquare() {
 }
 
 function moveMole() {
-    let timerID = null;
-    timerID = setInterval(randomSquare, interval);
+    timerID = setInterval(randomSquare, timerInterval);
+    countDownTimerID = setInterval(countDown, countDownTimerInterval);
 }
 
+function countDown() {
+    timer.innerHTML = --currentTimer;
+
+    if (currentTimer === 0) {
+        clearInterval(countDownTimerID);
+        clearInterval(timerID);
+        gameOver.innerHTML = `Game Over! You scored ${currentScore}!`
+    }
+}
