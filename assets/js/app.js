@@ -30,7 +30,8 @@ function createGameBoard() {
 createGameBoard();
 
 function hitMole() {
-    console.log('mole hit')
+    console.log('mole hit', this.dataset.id)
+    score.innerHTML = ++currentScore;
 }
 
 function randomSquare() {
